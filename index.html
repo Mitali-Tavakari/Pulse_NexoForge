@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --acc:#E8390E;--acc2:#FF5A30;
+    --ink:#0D0D0D;--ink2:#3A3A3A;--ink3:#888;
+    --bg:#FAFAF7;--bg2:#F2F1EC;--white:#fff;
+    --border:#E4E3DC;
+    --serif:'Playfair Display',Georgia,serif;
+    --sans:'DM Sans',system-ui,sans-serif;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);overflow-x:hidden}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes pulse-ring{0%{transform:scale(1);opacity:.4}100%{transform:scale(1.6);opacity:0}}
+  @keyframes slide-ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+  .fu1{animation:fadeUp .7s ease .05s both}
+  .fu2{animation:fadeUp .7s ease .18s both}
+  .fu3{animation:fadeUp .7s ease .3s both}
+  .fu4{animation:fadeUp .7s ease .44s both}
+  .fu5{animation:fadeUp .7s ease .58s both}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(250,250,247,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+  .logo{font-family:var(--serif);font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
+  .logo span{color:var(--acc)}
+  .nav-links{display:flex;align-items:center;gap:36px}
+  .nav-links a{font-size:13px;font-weight:500;color:var(--ink2);text-decoration:none;transition:color .2s}
+  .nav-links a:hover{color:var(--acc)}
+  .nav-cta{background:var(--ink);color:#fff;border:none;padding:10px 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);letter-spacing:.02em;transition:background .2s}
+  .nav-cta:hover{background:var(--acc)}
+
+  .ticker{background:var(--acc);color:#fff;height:36px;display:flex;align-items:center;overflow:hidden;margin-top:64px}
+  .ticker-inner{display:flex;white-space:nowrap;animation:slide-ticker 22s linear infinite}
+  .ticker-item{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:0 40px}
+  .ticker-dot{opacity:.5}
+
+  .hero{min-height:92vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:80px 48px 80px;gap:60px;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;right:-120px;top:-80px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(232,57,14,.08) 0%,transparent 70%);pointer-events:none}
+  .badge{display:inline-flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--border);padding:6px 14px;font-size:12px;font-weight:500;color:var(--ink2);margin-bottom:28px}
+  .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--acc);position:relative}
+  .badge-dot::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1px solid var(--acc);animation:pulse-ring 1.6s ease-out infinite}
+  h1{font-family:var(--serif);font-size:clamp(44px,5.5vw,72px);font-weight:900;line-height:1.04;letter-spacing:-.025em;margin-bottom:24px;color:var(--ink)}
+  h1 em{font-style:italic;color:var(--acc)}
+  .hero-sub{font-size:17px;line-height:1.7;color:var(--ink2);max-width:420px;margin-bottom:40px;font-weight:400}
+  .cta-form{display:flex;gap:0;max-width:460px}
+  .cta-input{flex:1;padding:15px 18px;font-size:14px;font-family:var(--sans);border:1.5px solid var(--border);border-right:none;background:var(--white);color:var(--ink);outline:none;transition:border-color .2s}
+  .cta-input:focus{border-color:var(--acc)}
+  .cta-input::placeholder{color:var(--ink3)}
+  .cta-btn{background:var(--acc);color:#fff;border:none;padding:15px 28px;font-size:13px;font-weight:600;font-family:var(--sans);letter-spacing:.04em;cursor:pointer;white-space:nowrap;transition:background .2s}
+  .cta-btn:hover{background:#c72d0a}
+  .hero-note{font-size:12px;color:var(--ink3);margin-top:14px}
+  .hero-note span{color:var(--acc);font-weight:600}
+
+  .score-wrap{position:relative;display:flex;justify-content:center;align-items:center}
+  .score-card{background:var(--white);border:1px solid var(--border);padding:40px;width:100%;max-width:400px;box-shadow:0 32px 80px rgba(0,0,0,.08);position:relative}
+  .score-card::before{content:'';position:absolute;top:-2px;left:40px;right:40px;height:3px;background:var(--acc)}
+  .score-label{font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px}
+  .score-num{font-family:var(--serif);font-size:96px;font-weight:900;line-height:1;color:var(--ink);margin-bottom:8px}
+  .score-num span{color:var(--acc)}
+  .score-sub{font-size:13px;color:var(--ink3);margin-bottom:32px}
+  .score-metrics{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border)}
+  .metric{background:var(--bg);padding:16px;position:relative;overflow:hidden}
+  .metric::after{content:'';position:absolute;bottom:0;left:0;height:2px;background:var(--acc);width:var(--w,0%);transition:width 1s ease .5s}
+  .metric-val{font-size:20px;font-weight:700;color:var(--ink);font-family:var(--serif)}
+  .metric-key{font-size:10px;color:var(--ink3);font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
+  .metric-trend{font-size:10px;color:#16a34a;font-weight:600;margin-top:2px}
+  .floating-tag{position:absolute;right:-20px;top:60px;background:var(--ink);color:#fff;padding:10px 16px;font-size:11px;font-weight:600;letter-spacing:.06em;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+
+  .logos{padding:48px 48px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--white)}
+  .logos-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:0}
+  .logos-label{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);white-space:nowrap;padding-right:48px;border-right:1px solid var(--border);margin-right:48px}
+  .logo-list{display:flex;align-items:center;gap:52px;flex-wrap:wrap}
+  .logo-co{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--border);letter-spacing:-.01em;transition:color .3s;cursor:default;white-space:nowrap}
+  .logo-co:hover{color:var(--ink3)}
+
+  .problem{padding:120px 48px;background:var(--ink);color:#fff;position:relative;overflow:hidden}
+  .problem::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+  .problem-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative}
+  .problem h2{font-family:var(--serif);font-size:clamp(36px,4vw,54px);font-weight:900;line-height:1.1;letter-spacing:-.02em;margin-bottom:24px}
+  .problem h2 em{font-style:italic;color:var(--acc)}
+  .problem p{font-size:16px;line-height:1.75;color:rgba(255,255,255,.65);max-width:400px}
+  .pain-list{display:flex;flex-direction:column;gap:2px}
+  .pain-item{display:flex;align-items:flex-start;gap:16px;background:rgba(255,255,255,.04);padding:24px;border-left:3px solid transparent;transition:border-color .3s;cursor:default}
+  .pain-item:hover{border-left-color:var(--acc);background:rgba(255,255,255,.06)}
+  .pain-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+  .pain-item h4{font-size:15px;font-weight:600;color:#fff;margin-bottom:6px}
+  .pain-item p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6}
+
+  .features{padding:120px 48px;background:var(--bg)}
+  .features-inner{max-width:1100px;margin:0 auto}
+  .section-tag{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:16px}
+  .section-h2{font-family:var(--serif);font-size:clamp(34px,4vw,52px);font-weight:900;letter-spacing:-.025em;line-height:1.1;margin-bottom:56px;color:var(--ink)}
+  .section-h2 em{font-style:italic}
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border)}
+  .feat-card{background:var(--white);padding:40px 36px;transition:all .25s ease;cursor:default;position:relative;overflow:hidden}
+  .feat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+  .feat-card:hover{transform:translateY(-4px);box-shadow:0 20px 48px rgba(0,0,0,.08)}
+  .feat-card:hover::after{transform:scaleX(1)}
+  .feat-num{font-family:var(--serif);font-size:56px;font-weight:900;color:var(--border);line-height:1;margin-bottom:20px;transition:color .25s}
+  .feat-card:hover .feat-num{color:var(--acc);opacity:.3}
+  .feat-card h3{font-size:18px;font-weight:700;color:var(--ink);margin-bottom:12px;letter-spacing:-.01em}
+  .feat-card p{font-size:14px;color:var(--ink2);line-height:1.7}
+
+  .pricing{padding:120px 48px;background:var(--bg2)}
+  .pricing-inner{max-width:1000px;margin:0 auto}
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border)}
+  .price-card{background:var(--white);padding:40px 32px;position:relative;transition:transform .2s}
+  .price-card.pop{background:var(--ink);color:#fff}
+  .price-card:hover{transform:translateY(-3px)}
+  .price-tier{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:20px}
+  .price-card.pop .price-tier{color:rgba(255,255,255,.5)}
+  .price-amt{font-family:var(--serif);font-size:52px;font-weight:900;line-height:1;color:var(--ink);margin-bottom:4px}
+  .price-card.pop .price-amt{color:#fff}
+  .price-per{font-size:12px;color:var(--ink3);margin-bottom:32px;font-weight:500}
+  .price-card.pop .price-per{color:rgba(255,255,255,.5)}
+  .price-feats{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:36px}
+  .price-feats li{font-size:13px;color:var(--ink2);display:flex;gap:10px;align-items:flex-start;line-height:1.5}
+  .price-card.pop .price-feats li{color:rgba(255,255,255,.75)}
+  .price-feats li::before{content:'✓';color:var(--acc);font-weight:700;flex-shrink:0;margin-top:1px}
+  .price-btn{width:100%;padding:14px;font-size:13px;font-weight:600;font-family:var(--sans);border:1.5px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;letter-spacing:.04em;transition:all .2s}
+  .price-btn:hover{background:var(--acc);border-color:var(--acc);color:#fff}
+  .price-card.pop .price-btn{background:var(--acc);border-color:var(--acc);color:#fff}
+  .price-card.pop .price-btn:hover{background:#c72d0a;border-color:#c72d0a}
+  .pop-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--acc);color:#fff;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:5px 16px}
+
+  .final-cta{padding:120px 48px;background:var(--acc);display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;overflow:hidden}
+  .final-cta::before{content:'';position:absolute;top:-60px;left:-60px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none}
+  .final-cta::after{content:'';position:absolute;bottom:-80px;right:-40px;width:400px;height:400px;border-radius:50%;background:rgba(0,0,0,.08);pointer-events:none}
+  .final-cta h2{font-family:var(--serif);font-size:clamp(36px,5vw,64px);font-weight:900;color:#fff;line-height:1.08;letter-spacing:-.025em;margin-bottom:20px;position:relative;z-index:1}
+  .final-cta p{font-size:17px;color:rgba(255,255,255,.8);max-width:460px;line-height:1.65;margin-bottom:48px;position:relative;z-index:1}
+  .final-form{display:flex;gap:0;max-width:460px;width:100%;position:relative;z-index:1}
+  .final-input{flex:1;padding:16px 20px;font-size:14px;font-family:var(--sans);border:2px solid rgba(255,255,255,.3);border-right:none;background:rgba(255,255,255,.12);color:#fff;outline:none;transition:border-color .2s;backdrop-filter:blur(8px)}
+  .final-input::placeholder{color:rgba(255,255,255,.55)}
+  .final-input:focus{border-color:rgba(255,255,255,.7)}
+  .final-btn{background:#fff;color:var(--acc);border:none;padding:16px 28px;font-size:13px;font-weight:700;font-family:var(--sans);letter-spacing:.04em;cursor:pointer;white-space:nowrap;transition:background .2s}
+  .final-btn:hover{background:var(--bg)}
+  .final-note{font-size:12px;color:rgba(255,255,255,.6);margin-top:16px;position:relative;z-index:1}
+
+  footer{background:var(--ink);padding:60px 48px 32px}
+  .footer-inner{max-width:1100px;margin:0 auto}
+  .footer-top{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:32px}
+  .footer-logo{font-family:var(--serif);font-size:24px;font-weight:700;color:#fff}
+  .footer-logo span{color:var(--acc)}
+  .footer-tagline{font-size:13px;color:rgba(255,255,255,.4);margin-top:8px;max-width:200px;line-height:1.5}
+  .footer-links{display:flex;gap:64px}
+  .footer-col h5{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
+  .footer-col a{display:block;font-size:13px;color:rgba(255,255,255,.55);text-decoration:none;margin-bottom:10px;transition:color .2s}
+  .footer-col a:hover{color:#fff}
+  .footer-bottom{display:flex;justify-content:space-between;align-items:center}
+  .footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+  .footer-credit{font-size:12px;color:rgba(255,255,255,.3)}
+  .footer-credit span{color:var(--acc)}
+
+  .success-msg{display:none;background:var(--white);border:1.5px solid #16a34a;padding:16px 24px;font-size:14px;font-weight:500;color:#16a34a;max-width:460px;margin-top:16px;text-align:left}
+  .success-msg.show{display:block;animation:fadeIn .3s ease both}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Pulse<span>.</span></div>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#about">About</a>
+    <button class="nav-cta" onclick="document.getElementById('hero-email').focus()">Start free trial</button>
+  </div>
+</nav>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">Revenue tracking <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Churn alerts <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">MRR forecasting <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Burn rate <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Net Promoter Score <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Runway calculator <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Investor updates <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Revenue tracking <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Churn alerts <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">MRR forecasting <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Burn rate <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Net Promoter Score <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Runway calculator <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Investor updates <span class="ticker-dot">·</span></span>
+  </div>
+</div>
+
+<section class="hero">
+  <div>
+    <div class="badge fu1"><div class="badge-dot"></div> Now in public beta</div>
+    <h1 class="fu2">Your business<br/>health in <em>one<br/>number.</em></h1>
+    <p class="hero-sub fu3">Pulse connects to your Stripe, analytics, and support tools — and gives you a single score that tells you exactly how your business is doing. In seconds, not hours.</p>
+    <div class="fu4">
+      <div class="cta-form">
+        <input class="cta-input" id="hero-email" type="email" placeholder="Enter your work email" />
+        <button class="cta-btn" onclick="handleSignup('hero-email','hero-success')">Start for free →</button>
+      </div>
+      <div class="success-msg" id="hero-success">🎉 You're in! Check your inbox for next steps.</div>
+      <p class="hero-note fu5">No credit card required. <span>14-day free trial.</span> Cancel anytime.</p>
+    </div>
+  </div>
+  <div class="score-wrap fu3">
+    <div class="score-card">
+      <div class="score-label">Business health score</div>
+      <div class="score-num" id="score-display">0<span>/100</span></div>
+      <div class="score-sub">↑ 8 points from last week — Strong growth</div>
+      <div class="score-metrics">
+        <div class="metric" style="--w:84%"><div class="metric-val">$42.1k</div><div class="metric-key">MRR</div><div class="metric-trend">↑ 12.4%</div></div>
+        <div class="metric" style="--w:91%"><div class="metric-val">2.1%</div><div class="metric-key">Churn</div><div class="metric-trend">↓ 0.3%</div></div>
+        <div class="metric" style="--w:76%"><div class="metric-val">1,840</div><div class="metric-key">Active users</div><div class="metric-trend">↑ 94 this week</div></div>
+        <div class="metric" style="--w:88%"><div class="metric-val">14 mo</div><div class="metric-key">Runway</div><div class="metric-trend">↑ 2 months</div></div>
+      </div>
+      <div class="floating-tag">Updated 2 mins ago</div>
+    </div>
+  </div>
+</section>
+
+<div class="logos">
+  <div class="logos-inner">
+    <div class="logos-label">Trusted by 2,400+ founders</div>
+    <div class="logo-list">
+      <div class="logo-co">Meridian</div>
+      <div class="logo-co">Stacklane</div>
+      <div class="logo-co">Novio</div>
+      <div class="logo-co">Clarify</div>
+      <div class="logo-co">Orbis</div>
+    </div>
+  </div>
+</div>
+
+<section class="problem" id="about">
+  <div class="problem-inner">
+    <div>
+      <div class="section-tag" style="color:#FF5A30">The problem</div>
+      <h2>Founders are <em>drowning</em> in dashboards.</h2>
+      <p>You have Stripe, Mixpanel, Intercom, Google Analytics — all open in different tabs. All telling you different things. None of them telling you what to do next.</p>
+    </div>
+    <div class="pain-list">
+      <div class="pain-item"><div class="pain-icon">📊</div><div><h4>Too many metrics, zero clarity</h4><p>You're tracking 40 KPIs. You can name 3 of them when your investor calls.</p></div></div>
+      <div class="pain-item"><div class="pain-icon">🕐</div><div><h4>Hours lost to reporting</h4><p>Every Monday morning you copy numbers from six tools into a spreadsheet. That's not a strategy.</p></div></div>
+      <div class="pain-item"><div class="pain-icon">🚨</div><div><h4>You find out too late</h4><p>Churn spike, runway drop, NPS crash — you hear about it two weeks after it started.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="section-tag">How it works</div>
+    <h2 class="section-h2">Everything you need to<br/><em>actually know</em> your business.</h2>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="feat-num">01</div><h3>Connect in 60 seconds</h3><p>One-click integrations with Stripe, Paddle, Mixpanel, Intercom, HubSpot, and 40+ more. No engineers needed.</p></div>
+      <div class="feat-card"><div class="feat-num">02</div><h3>Your Pulse Score</h3><p>A single 0–100 score calculated from your revenue, retention, growth, and runway. Benchmark against 2,000+ similar companies.</p></div>
+      <div class="feat-card"><div class="feat-num">03</div><h3>Smart alerts, not noise</h3><p>Pulse learns your baselines and only pings you when something actually matters. Signal only — no spam.</p></div>
+      <div class="feat-card"><div class="feat-num">04</div><h3>Instant investor reports</h3><p>One-click monthly updates with all your key metrics, beautifully formatted. Your investors will love you.</p></div>
+      <div class="feat-card"><div class="feat-num">05</div><h3>Forecast with confidence</h3><p>AI-powered MRR and runway forecasting based on your actual growth trajectory. Plan your next 12 months.</p></div>
+      <div class="feat-card"><div class="feat-num">06</div><h3>Team visibility</h3><p>Share a live dashboard with your team so everyone knows the number that matters. No more Monday morning reports.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <div class="section-tag" style="text-align:center">Simple pricing</div>
+    <h2 class="section-h2" style="text-align:center;margin-bottom:56px">No spreadsheets.<br/><em>No surprises.</em></h2>
+    <div class="pricing-grid">
+      <div class="price-card"><div class="price-tier">Starter</div><div class="price-amt">$0</div><div class="price-per">Free forever</div><ul class="price-feats"><li>Up to $10k MRR</li><li>3 integrations</li><li>Weekly Pulse Score</li><li>Email alerts</li></ul><button class="price-btn">Get started</button></div>
+      <div class="price-card pop"><div class="pop-badge">Most popular</div><div class="price-tier">Growth</div><div class="price-amt">$49</div><div class="price-per">per month · billed monthly</div><ul class="price-feats"><li>Unlimited MRR tracking</li><li>40+ integrations</li><li>Real-time Pulse Score</li><li>Smart alerts</li><li>Investor report generator</li><li>12-month forecasting</li></ul><button class="price-btn">Start 14-day free trial</button></div>
+      <div class="price-card"><div class="price-tier">Scale</div><div class="price-amt">$149</div><div class="price-per">per month · billed monthly</div><ul class="price-feats"><li>Everything in Growth</li><li>Unlimited team seats</li><li>Custom metrics</li><li>Priority support</li><li>Custom integrations</li></ul><button class="price-btn">Contact sales</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <h2>Know your number.<br/>Run your business.</h2>
+  <p>Join 2,400+ founders who start every morning with a single, honest look at their business health.</p>
+  <div class="final-form">
+    <input class="final-input" id="final-email" type="email" placeholder="your@email.com"/>
+    <button class="final-btn" onclick="handleSignup('final-email','final-success')">Start free trial →</button>
+  </div>
+  <div class="success-msg" id="final-success" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.4);color:#fff;text-align:center">🎉 You're on the list! Check your inbox.</div>
+  <p class="final-note">14-day free trial · No credit card · Cancel anytime</p>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">Pulse<span>.</span></div>
+        <div class="footer-tagline">Your business health in one number.</div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><h5>Product</h5><a href="#">Features</a><a href="#">Integrations</a><a href="#">Pricing</a><a href="#">Changelog</a></div>
+        <div class="footer-col"><h5>Company</h5><a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Press</a></div>
+        <div class="footer-col"><h5>Legal</h5><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Security</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Pulse, Inc. All rights reserved.</div>
+      <div class="footer-credit">Built by <span>Your Name</span> · yourportfolio.com</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function animateScore(target, duration) {
+    const el = document.getElementById('score-display');
+    let start = 0;
+    const step = Math.ceil(target / (duration / 16));
+    const timer = setInterval(() => {
+      start = Math.min(start + step, target);
+      el.innerHTML = start + '<span>/100</span>';
+      if (start >= target) clearInterval(timer);
+    }, 16);
+  }
+  setTimeout(() => animateScore(84, 1400), 600);
+
+  function handleSignup(inputId, successId) {
+    const input = document.getElementById(inputId);
+    const success = document.getElementById(successId);
+    if (!input.value || !input.value.includes('@')) {
+      input.style.borderColor = 'var(--acc)';
+      input.focus();
+      setTimeout(() => input.style.borderColor = '', 1500);
+      return;
+    }
+    input.parentElement.style.display = 'none';
+    success.classList.add('show');
+  }
+</script>
+</body>
+</html>       
